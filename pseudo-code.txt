@@ -1,0 +1,73 @@
+pseudo-code- notes
+Objectives of this program:
+
+--1: Choose a theme:
+    -->Cities of the world
+--2: Progamming rquirements:
+	• Use key events to listen for the letters that your players will type.
+	• Display the following on the page:
+		○ Press any key to get started!
+		○ Wins: (# of times user guessed the word correctly).
+		○ If the word is madonna, display it like this when the game starts: _ _ _ _ _ _ _.
+			§ As the user guesses the correct letters, reveal them: m a d o _  _ a.
+		○ Number of Guesses Remaining: (# of guesses remaining for the user).
+		○ Letters Already Guessed: (Letters the user has guessed, displayed like L Z Y H).
+After the user wins/loses the game should automatically choose another word and make the user play it
+
+--3: Structure:
+(DONE)	• Pick a random word
+	• Take as an input the users guess
+	• Validate the guess (letter):
+		○ Is the guess part of the word
+		○ Has the guess been used
+        -->Keep track of the letters the player has guessed
+ 	•  Display the progress
+		○ Display correctly guessed letters
+		○ Display incorrectly guessed letters        
+		○ Display number of INCORRECT guesses available out of 15
+		○ Display Wins (# of timese user guessed the word correctly)
+
+--4: Pseudocode:
+
+Pick a random word
+
+WHILE the word has not been guessed {
+    SHOW the player their current progress
+    GET a guess from the player
+
+    IF the guess is in the word {
+        UPDATE the player's progress with the guess
+    }
+    ELSE {
+        UPDATE the incorrect guesses available (15 -- 1)
+        UPDATE incorrectly guessed letters list
+    }
+
+}
+DISPLAY - congratulate player on guessing the word & Display graphic of city
+
+
+///////////////////
+On Page load:
+--1:declare variables:
+    -->cityArray              
+    -->inputGuess               //Letter pressed by user
+    -->failedGuessArray         //Stored array of failed letter guesses
+    -->guessesAvailable         //Decrementing counter strating at 15
+    -->space                    //number of spaces in word '_'
+
+--2: initialize variables:
+    -->ra 
+
+
+//todo
+--Define alphabet
+----validate key press against alphabet
+----exclude errant keys from counting against guesses
+
+--Push wrongly guessed keys into array
+----validate wrongly pressed keys so they can only be counted once
+
+--Style page
+--add images
+--display images on success

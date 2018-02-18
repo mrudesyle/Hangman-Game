@@ -1,0 +1,14 @@
+.dashed {
+    border-width: 2px;
+    border-style: dashed;
+
+  }
+
+  .solid {
+    border-width: 5px;
+    border-style: solid;
+
+  }
+  #finished-word{
+    text-align: center;
+  }

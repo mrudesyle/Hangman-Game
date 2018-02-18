@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portfolio</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+
+</head>
+
+<body style="background:url('assets/images/skyBackground.png') no-repeat scroll center top transparent;">
+
+
+    <div class="container body-content">
+        <div clas="row">
+            <div class="col-md-12">
+                <div class="jumbotron jt-color">
+                    <h1>Hangman - Cities</h1>
+                    <hr />
+                    <h2>Press any key to start</h2>
+                    <div class="row pad">
+                        <div class="col-sm-12 col-md-6 col-lg-6 dashed">
+                            <ul>
+                                <li>
+                                    <h4>Total # Wins:</h4>
+                                    <h3>
+                                        <span id="wins"></span>
+                                    </h3>
+                                    </br>
+                                    </h3>
+                                </li>
+                                <li>
+                                    <h4>Current Word:</h4>
+                                    <br />
+                                    <h3>
+                                        <span id="current-word"></span>
+                                    </h3>
+                                    </br>
+                                </li>
+                                <li>
+                                    <h4># of Guesses Remaining:</h4>
+                                    </br>
+                                    <h3>
+                                        <span id="guesses-left"></span>
+                                    </h3>
+                                </li>
+                                <li>
+                                    <h4>Letters Already Guessed:</h4>
+                                    <h3>
+                                        <span id="letters-guessed"></span>
+                                    </h3>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                            <img id="image-div" class="img-responsive solid" src="assets/images/hangman.jpg" />
+                            <h1 id="finished-word"></h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+    </div>
+
+    <script type="text/javascript">
+        // Declare words array of cities
+        var words = ["Denver", "Delhi", "Mumbai", "Paris", "Rome", "Berlin", "Osaka"];
+
+        // choose random city from words array
+        var currentWord = words[Math.floor(Math.random() * words.length)].toUpperCase();
+
+        // set variable to hold available guesses
+        var guessesLeft = 15;
+        document.getElementById("guesses-left").innerHTML = guessesLeft;
+
+        // set variable to be used to store wins
+        var wins = 0;
+        document.getElementById("wins").innerHTML = wins;
+
+        var resetLettersGuessed = ""
+
+        //Declare empty array to push blanks (_) to
+        var answerArray = [];
+
+        //Declare an empty array to push wrong guesses to
+        var wrongAnswerArray = [];
+
+        var i;
+
+        //log the current random word for debugging/cheat
+        console.log("Current word is: " + currentWord);
+
+        //push underscore characters for each letter of the randomly chosen word
+        for (i = 0; i < currentWord.length; i++) {
+            answerArray.push("__");
+        }
+        document.getElementById("current-word").innerHTML = answerArray.join(" ");
+
+
+        //check for position of letter in randomly chosen word
+        function checkLetter(letter) {
+            var positions = new Array();
+            for (i = 0; i < currentWord.length; i++) {
+                if (currentWord[i] === letter)
+                    positions.push(i);
+                // console.log(positions);
+            }
+            return positions;
+        }
+
+
+        //function to check for existence of wrongly guessed letter to prevent dupes
+        function checkWrongLetter(wrongLetter) {
+            for (var i = 0; i < wrongAnswerArray.length; i++) {
+                if (wrongAnswerArray[i] === wrongLetter)
+                    return true;
+                //  console.log(wrongAnswerArray);
+            }
+            return false;
+        }
+
+
+        // return number of letters that are still not guessed
+        function lettersRemaining() {
+            var i;
+            var tg = 0;
+            for (i in answerArray) {
+                if (answerArray[i] === "__")
+                    tg++;
+            }
+            return tg;
+        }
+
+        ///////////////////////////////////////////////////////////////////////////////////////
+        // begin play & execution of functions
+        document.onkeyup = function (event) {
+            var letter = event.key;
+            var lettersGuessed = letter.toLocaleUpperCase();
+            var i;
+            var positions = checkLetter(lettersGuessed);
+            var wrongLetter = checkWrongLetter(lettersGuessed);
+
+
+            //check current letter against current word array
+            //check to find index in array of guessed letter
+            if (positions.length) {
+
+                for (i = 0; i < positions.length; i++) {
+                    answerArray[positions[i]] = lettersGuessed;
+                }
+
+                document.getElementById("current-word").innerHTML = answerArray.join(" ");
+            }
+            else {
+                //push wrongly guessed letter into wrongAnswerArray
+                wrongAnswerArray.push(lettersGuessed);
+
+                //execute function to see if guessed letter is in wrong letter array
+                //if it is - take no action
+                //else - decrement guesses available
+                if (wrongLetter == true) {
+                    // console.log(wrongAnswerArray);
+                } else {
+                    document.getElementById("letters-guessed").innerHTML += lettersGuessed + " ";
+
+                    // subtract a point from guesses left
+                    guessesLeft--;
+                    document.getElementById("guesses-left").innerHTML = guessesLeft;
+                }
+            }
+
+
+            // Outcome = Game - Lost
+            // Display message and reset word
+            if (guessesLeft === 0) {
+                alert("Game Over! The word was " + currentWord + ". You had a total of: " + wins + " wins!");
+                location.reload();
+            }
+
+            // Outcome = Game - Won
+            if (lettersRemaining() == 0) {
+                var img = "assets/images/" + currentWord + ".jpg";
+                console.log(img);
+                document.getElementById('image-div').src = img;
+
+                document.getElementById("finished-word").innerHTML = currentWord;
+
+                // reset guesses left
+                guessesLeft = 15;
+                document.getElementById("guesses-left").innerHTML = guessesLeft;
+
+                // reset letters guessed
+                document.getElementById("letters-guessed").innerHTML = resetLettersGuessed;
+
+                // Generate a new word to guess
+                currentWord = words[Math.floor(Math.random() * words.length)].toUpperCase();
+                console.log("New word is: " + currentWord);
+
+                // re-populate answerArray with blanks
+                answerArray = [];
+                for (i = 0; i < currentWord.length; i++) {
+                    answerArray.push("__");
+                }
+                document.getElementById("current-word").innerHTML = answerArray.join(" ");
+
+                // Add to the win total
+                wins++;
+                document.getElementById("wins").innerHTML = wins;
+            }
+        }
+    </script>
+
+</body>
+
+</html>
