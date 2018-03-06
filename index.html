@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -185,7 +186,11 @@
 
             // Outcome = Game - Won
             if (lettersRemaining() == 0) {
-                var img = "assets/images/" + currentWord + ".jpg";
+                var imgWord = currentWord.toLowerCase();
+                firstLetter = imgWord.substring(0,1).toUpperCase();
+                imgWord = firstLetter + imgWord.substring(1,imgWord.length);
+                console.log(imgWord);
+                var img = "assets/images/" + imgWord + ".jpg";
                 console.log(img);
                 document.getElementById('image-div').src = img;
 
